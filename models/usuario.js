@@ -42,7 +42,8 @@ const UsuarioSchema = Schema({
 
 //ocultamos la password y el __v para que no se muestren al ejecutar un POST
 UsuarioSchema.methods.toJSON = function() { //tiene que ser una funcion normal para emplear el this
-    const { __v, password, ...usuario } = this.toObject();
+    const { __v, password, _id, ...usuario } = this.toObject();
+    usuario.uid = _id;
     return usuario;
 }
 

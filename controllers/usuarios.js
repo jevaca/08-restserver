@@ -88,10 +88,11 @@ const usuariosDelete = async (req, res) => {
     // const usuario = await Usuario.findByIdAndDelete( id ); //ya no se acostumbra borrar usuarios, sino deshabilitarlos
 
     const usuario = await Usuario.findByIdAndUpdate( id, {estado: false});
-
+    //const usuarioAutenticado = req.usuario;
 
     res.json({
-        usuario
+        usuario,
+        //usuarioAutenticado
     }); //para retornar un objeto json
 };
 
