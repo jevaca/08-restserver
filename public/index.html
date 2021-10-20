@@ -39,7 +39,7 @@
 
             const body = { id_token: response.credential };
 
-           fetch(`${process.env.URL}/api/auth/google`, {
+           fetch(`https://rest-server-crud-usuarios.herokuapp.com/api/auth/google`, {
                method: 'POST',
                headers: {
                    'Content-Type' : 'application/json'
