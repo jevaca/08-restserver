@@ -7,8 +7,17 @@ class Server {
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
-        this.usuariosRoutePath = '/api/usuarios';
-        this.authPath = '/api/auth';
+
+        this.paths = {
+            auth:       '/api/auth',
+            buscar:     '/api/buscar',
+            categorias: '/api/categorias',
+            usuarios:   '/api/usuarios',
+            productos:  '/api/productos',
+        }
+
+        //this.usuariosRoutePath = '/api/usuarios';
+        //this.authPath = '/api/auth';
 
         //Conectar a base de datos
         this.conctarDB();
@@ -35,8 +44,11 @@ class Server {
     routes(){
 
         //middleware donde especificamos la ruta para llamar a la API desde el cliente y con require las peticiones que utilizará
-        this.app.use(this.authPath, require('../routes/auth'));
-        this.app.use(this.usuariosRoutePath, require('../routes/usuarios'));
+        this.app.use(this.paths.auth, require('../routes/auth'));
+        this.app.use(this.paths.buscar, require('../routes/buscar'));
+        this.app.use(this.paths.categorias, require('../routes/categorias'));
+        this.app.use(this.paths.usuarios, require('../routes/usuarios'));
+        this.app.use(this.paths.productos, require('../routes/productos'));
         
     }
 

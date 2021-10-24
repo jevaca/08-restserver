@@ -1,5 +1,4 @@
 const { response, request } = require("express");
-const { removeListener } = require("../models/usuario");
 
 const esAdminRole = ( req = request, res = response, next) => {
 
