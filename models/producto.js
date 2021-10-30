@@ -34,6 +34,9 @@ const ProductoSchema = Schema({
     },
     img: {
         type: String
+    },
+    talle: {
+        type: String,
     }
 
 });
