@@ -67,8 +67,7 @@ const usuariosPut = async (req, res) => {
 
     }
 
-    const usuario = await Usuario.findByIdAndUpdate( id, resto ); //alcualizamos el usuario con el id del primer argumento, en el segundo especificamos las propiedas a modificar y sus valores
-
+    const usuario = await Usuario.findByIdAndUpdate( id, resto, { new: true } ); //alcualizamos el usuario con el id del primer argumento, en el segundo especificamos las propiedas a modificar y sus valores
 
         res.json({usuario}); //para retornar un objeto json
 };
