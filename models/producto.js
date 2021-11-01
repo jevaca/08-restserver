@@ -35,6 +35,10 @@ const ProductoSchema = Schema({
     img: {
         type: String
     },
+    tieneTalle: {
+        type: Boolean,
+        default: false
+    }
 
 
 });

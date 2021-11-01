@@ -1,5 +1,4 @@
 const { response, request } = require("express");
-const { body } = require("express-validator");
 const Producto = require("../models/producto");
 
 
