@@ -33,6 +33,12 @@ const crearPedido = async ( req = request, res = response ) => {
 
     }
 
+    let total = await Pedido.countDocuments();
+    data.numero = total + 1;
+
+    const fecha = new Date().toLocaleDateString();
+    data.fecha = fecha;
+
     const pedido = await new Pedido(data);
 
     await pedido.save();
