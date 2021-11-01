@@ -1,12 +1,13 @@
 const { response } = require("express");
 const { ObjectId } = require("mongoose").Types;
-const { Usuario, Categoria, Producto } = require('../models');
+const { Usuario, Categoria, Producto, Pedido } = require('../models');
 
-const coleecionesPermitidas = [
+const coleccionesPermitidas = [
     'categorias',
     'productos',
     'roles',
     'usuarios',
+    'pedidos',
 ];
 
 const buscarUsuario = async( termino = '', res = response) => {
@@ -58,6 +59,7 @@ const buscarCategorias = async( termino = '', res = response) => {
     })
 
 }
+
 const buscarProductos = async( termino = '', res = response) => {
 
     const esMongoID = ObjectId.isValid( termino );
@@ -83,17 +85,48 @@ const buscarProductos = async( termino = '', res = response) => {
 }
 
 
+const buscarPedidos = async( termino = '', res = response) => {
+
+    const esMongoID = ObjectId.isValid( termino );
+
+    if ( esMongoID ) {
+
+        const [ total, pedidos  ] = await Promise.all([ 
+                Pedido.find( { usuario: termino } ).countDocuments(),
+                Pedido.find( { usuario: termino } )
+                .populate('productos.producto', 'nombre')
+                .populate('usuario', 'nombre')
+            ]);    
+        
+        return res.json( {
+            total,
+            results: ( pedidos ) ? [ pedidos ] : []
+        })
+    }
+
+    // const regex = new RegExp( termino, 'i' ); //hacemos que sea insensible a las minusculas y mayusculas con expresiones regulares
+
+    // const producto = await Producto.find({ nombre: regex, estado: true })
+    //     .populate('categoria', 'nombre');;
+    
+    // res.json( {
+    //     results: producto
+    // })
+
+}
+
+
 const buscar = ( req, res = response) => {
 
     const { coleccion, termino } = req.params;
 
-    if( !coleecionesPermitidas.includes( coleccion ) ){
+    if( !coleccionesPermitidas.includes( coleccion ) ){
         return res.status(400).status({
-            msg: `Las colecciones permitidas son: ${ coleecionesPermitidas }`
+            msg: `Las colecciones permitidas son: ${ coleccionesPermitidas }`
         })
     }
 
-    switch(coleccion){
+    switch( coleccion ){
         case 'usuarios':
             buscarUsuario( termino, res );
         break;
@@ -102,6 +135,9 @@ const buscar = ( req, res = response) => {
         break;
         case 'productos':
             buscarProductos( termino, res );
+        break;
+        case 'pedidos':
+            buscarPedidos( termino, res );
         break;
         default:
             res.status(500).json({

@@ -11,7 +11,7 @@ const obtenerPedidos = async (req = request, res = response) => {
         Pedido.find()
         .skip(Number(desde)) 
         .limit(Number(limite))
-        .populate('productos.id', 'nombre')
+        .populate('productos.producto', 'nombre')
         .populate('usuario', 'nombre')
     ]);
 
