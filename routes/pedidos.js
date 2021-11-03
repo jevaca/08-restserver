@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { obtenerPedidos, crearPedido, actualizarPedido } = require('../controllers/pedidos');
+const { obtenerPedidos, crearPedido, actualizarPedido, obtenerPedido } = require('../controllers/pedidos');
 
 const { existePedido } = require('../helpers/db-validators');
 
@@ -14,6 +14,13 @@ const router = Router();
 
 //obtener todos los pedidos
 router.get('/', obtenerPedidos);
+
+//obtener un pedido
+router.get('/:id', [
+    check('id', 'No es un id de Mongo válido').isMongoId(),
+    check('id').custom( existePedido ),
+    validarCampos,
+] ,obtenerPedido);
 
 //crear un pedido
 router.post('/', [

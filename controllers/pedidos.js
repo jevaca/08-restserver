@@ -22,6 +22,18 @@ const obtenerPedidos = async (req = request, res = response) => {
 
 }
 
+const obtenerPedido = async (req = request, res = response) => {
+
+    const { id } = req.params;
+
+    const pedido = await  Pedido.findById( id )
+        .populate('productos.producto', 'nombre')
+        .populate('usuario', 'nombre');
+
+    res.json( pedido );
+
+}
+
 const crearPedido = async ( req = request, res = response ) => {
 
     const { usuario, ...body } = req.body;
@@ -60,5 +72,6 @@ const actualizarPedido = async (req = request, res = response) => {
 module.exports = {
     obtenerPedidos,
     crearPedido,
-    actualizarPedido
+    actualizarPedido,
+    obtenerPedido
 }
